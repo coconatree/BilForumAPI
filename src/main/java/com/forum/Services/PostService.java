@@ -51,7 +51,7 @@ public class PostService
         return null;
     }
 
-    public String addPost(Post post) throws ExecutionException, InterruptedException
+    public String putPost(Post post) throws ExecutionException, InterruptedException
     {
         CollectionReference posts = getCollection("POSTS");
 
@@ -60,7 +60,6 @@ public class PostService
         return postRef.get().getUpdateTime().toString();
     }
 
-    public void putPost(Post post){}
 
     public void deletePost(int id){}
 }

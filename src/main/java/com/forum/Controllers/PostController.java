@@ -4,20 +4,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forum.PojoClasses.Post;
 import com.forum.Services.PostService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.apache.http.HttpRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -28,11 +26,7 @@ public class PostController
     @Autowired
     PostService postService;
 
-    @GetMapping(
-            value = "/getAll",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
-            )
+    @GetMapping(value = "/getAll")
 
     public ArrayList<Post> getAllPosts()
     {
@@ -68,44 +62,23 @@ public class PostController
         return null;
     }
 
-    @PostMapping(
-            value = "/post",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
-            )
-
-    public ResponseEntity<Post> addPost(@RequestBody Post post)
+    @PutMapping("/addPost")
+    public ResponseEntity<Post> addPost(@RequestBody String data)
     {
-        Post returnValue = new Post();
+        ObjectMapper mapper = new ObjectMapper();
 
-        returnValue.setId(post.getId());
-        returnValue.setViews(post.getViews());
-        returnValue.setVotes(post.getVotes());
-        returnValue.setTitle(post.getTitle());
-        returnValue.setContent(post.getContent());
-        returnValue.setAuthor(post.getAuthor());
-        returnValue.setDate(post.getDate());
+        Post post = null;
 
         try
         {
-            System.out.println(postService.addPost(post));
+            post = mapper.readValue(data, new TypeReference<Post>(){});
+            postService.putPost(post);
         }
-        catch (ExecutionException e)
+        catch (IOException | ExecutionException | InterruptedException e)
         {
             e.printStackTrace();
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        return new ResponseEntity<Post>(returnValue, HttpStatus.OK);
-    }
-
-    @PutMapping("/put")
-    public String addPost(@ModelAttribute Post post, Model model)
-    {
-        return "result";
+        return new ResponseEntity<Post>(post, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
