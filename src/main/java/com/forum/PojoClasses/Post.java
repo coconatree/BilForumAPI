@@ -18,12 +18,14 @@ public class Post
     private String author;
     private String date;
 
+    private String tags;
+
     /***********************************************************************************/
 
     @Override
     public String toString()
     {
-        return String.format("Id: %s - Views: %d - Votes: %d - Title: %s - Content: %s - Author: %s - Date: %s",
+        return String.format("Id: %s - Views: %d - Votes: %d - Title: %s - Content: %s - Author: %s - Date: %s - Tags: %s",
 
                 this.id,
                 this.views,
@@ -31,7 +33,8 @@ public class Post
                 this.title,
                 this.content,
                 this.author,
-                this.date
+                this.date,
+                this.tags
 
                 );
     }

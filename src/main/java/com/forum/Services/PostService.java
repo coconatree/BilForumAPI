@@ -35,6 +35,21 @@ public class PostService
         return postList;
     }
 
+    public ArrayList<Post> getAllPostsForum(String FORUM) throws InterruptedException, ExecutionException
+    {
+        ArrayList<Post> postList = new ArrayList<>();
+
+        CollectionReference posts = getCollection(String.format("%sPostList", FORUM));
+
+        ApiFuture<QuerySnapshot> querySnapshot = posts.get();
+
+        for(DocumentSnapshot document : querySnapshot.get().getDocuments())
+        {
+            postList.add(document.toObject(Post.class));
+        }
+        return postList;
+    }
+
     public Post getPost(String id) throws ExecutionException, InterruptedException
     {
         CollectionReference posts = getCollection("POSTS");
@@ -51,9 +66,9 @@ public class PostService
         return null;
     }
 
-    public String putPost(Post post) throws ExecutionException, InterruptedException
+    public String putPostToForum(Post post, String FORUM) throws ExecutionException, InterruptedException
     {
-        CollectionReference posts = getCollection("POSTS");
+        CollectionReference posts = getCollection(String.format("%sPostList", FORUM));
 
         ApiFuture<WriteResult> postRef = posts.document(post.getId()).set(post);
 

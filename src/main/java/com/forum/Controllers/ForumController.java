@@ -8,15 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/forum")
-public class FormController
+public class ForumController
 {
     @Autowired
     ForumService forumService;
 
     @GetMapping("get/{ID}")
-    public String getForum(@PathVariable(value = "ID") String ID)
+    public Forum getForum(@PathVariable(value = "ID") String ID)
     {
         try
         {
@@ -26,6 +28,20 @@ public class FormController
         {
             e.printStackTrace();
         }
-        return "Error";
+        return null;
+    }
+
+    @GetMapping("getAll")
+    public ArrayList<Forum> getAllForum()
+    {
+        try
+        {
+            return forumService.getAllForum();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

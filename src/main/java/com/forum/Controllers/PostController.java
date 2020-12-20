@@ -42,6 +42,22 @@ public class PostController
         return null;
     }
 
+    @GetMapping(value = "/getAll/{FORUM}")
+
+    public ArrayList<Post> getAllPosts(@PathVariable(value="FORUM") String FORUM)
+    {
+        try
+        {
+            return postService.getAllPostsForum(FORUM);
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace();
+            System.out.println(exc.getMessage());
+        }
+        return null;
+    }
+
     @GetMapping("/get/{ID}")
     public Post getPost(@PathVariable(value="ID") String ID)
     {
@@ -62,8 +78,8 @@ public class PostController
         return null;
     }
 
-    @PutMapping("/addPost")
-    public ResponseEntity<Post> addPost(@RequestBody String data)
+    @PutMapping("/addPost/{FORUM}")
+    public ResponseEntity<Post> addPost(@RequestBody String data, @PathVariable(value="FORUM") String FORUM)
     {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -72,7 +88,7 @@ public class PostController
         try
         {
             post = mapper.readValue(data, new TypeReference<Post>(){});
-            postService.putPost(post);
+            postService.putPostToForum(post, FORUM);
         }
         catch (IOException | ExecutionException | InterruptedException e)
         {

@@ -19,20 +19,33 @@ public class ForumService
         return db.collection(name);
     }
 
-    public String getForum(String id) throws ExecutionException, InterruptedException
+    public Forum getForum(String ID) throws ExecutionException, InterruptedException
     {
-        CollectionReference forums = getCollection("FORUM");
+        ArrayList<Forum>  forumList =this.getAllForum();
+
+        for (Forum forum : forumList)
+        {
+            System.out.println("RAN");
+            if(forum.getId().equals(ID))
+            {
+                return forum;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Forum> getAllForum() throws ExecutionException, InterruptedException
+    {
+        ArrayList<Forum> forumList = new ArrayList<>();
+
+        CollectionReference forums = getCollection("FORUMS");
 
         ApiFuture<QuerySnapshot> querySnapshot = forums.get();
 
         for(DocumentSnapshot document : querySnapshot.get().getDocuments())
         {
-            if(document.toObject(Post.class).getId().equals(id))
-            {
-                return document.toObject(Forum.class).getPostList().get(0).getId();
-            }
+            forumList.add(document.toObject(Forum.class));
         }
-        return "Error";
+        return forumList;
     }
-
 }
