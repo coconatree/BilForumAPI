@@ -22,6 +22,7 @@ public class ForumController
     {
         try
         {
+            System.out.println(ID);
             return forumService.getForum(ID);
         }
         catch (Exception e)
@@ -31,7 +32,7 @@ public class ForumController
         return null;
     }
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public ArrayList<Forum> getAllForum()
     {
         try
