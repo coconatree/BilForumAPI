@@ -26,6 +26,21 @@ public class PostController
     @Autowired
     PostService postService;
 
+    @GetMapping(value = "/getTop10")
+
+    public ArrayList<Post> getTopTen()
+    {
+        try
+        {
+            return postService.getTop10();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping(value = "/getAll")
 
     public ArrayList<Post> getAllPosts()
