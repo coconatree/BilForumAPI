@@ -36,7 +36,7 @@ public class RegisterService
     {
         CollectionReference users = getCollection("USERS");
 
-        ApiFuture<WriteResult> userRef = users.document(user.getEmail()).set(user);
+        ApiFuture<WriteResult> userRef = users.document(user.getUserID()).set(user);
 
         return userRef.get().getUpdateTime().toString();
     }

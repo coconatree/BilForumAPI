@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forum.PojoClasses.User;
 import com.forum.Services.RegisterService;
+import com.forum.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class RegisterController {
     @Autowired
     RegisterService registerService;
 
+    @Autowired
+    UserService us;
+
     @GetMapping(value = "/getAll")
     public ArrayList<User> getAllUsers()
     {
@@ -35,7 +39,7 @@ public class RegisterController {
         return null;
     }
     @PutMapping("/addUser")
-    public ResponseEntity<User> addPost(@RequestBody String data)
+    public ResponseEntity<User> addUser(@RequestBody String data)
     {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -45,6 +49,25 @@ public class RegisterController {
         {
             user = mapper.readValue(data, new TypeReference<User>(){});
             registerService.addUser(user);
+        }
+        catch (IOException | ExecutionException | InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<User> updateUser(@RequestBody String data)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+
+        User user = null;
+
+        try
+        {
+            user = mapper.readValue(data, new TypeReference<User>(){});
+            us.updateUser(user);
         }
         catch (IOException | ExecutionException | InterruptedException e)
         {
