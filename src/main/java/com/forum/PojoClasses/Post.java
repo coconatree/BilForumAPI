@@ -1,14 +1,11 @@
 package com.forum.PojoClasses;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Post
 {
     private String id;
 
-    private int views;
-    private int votes;
+    private String views;
+    private String votes;
 
     /***********************************************************************************/
 
@@ -20,12 +17,39 @@ public class Post
 
     private String tags;
 
+    private String comments;
+    private String answers;
+
+    /***********************************************************************************/
+
+    public Post()
+    {
+
+    };
+
+    /***********************************************************************************/
+
+    public Post(String id, String views, String votes, String title, String content, String author, String date, String tags, String comments, String answers)
+    {
+        this.id = id;
+        this.views = views;
+        this.votes = votes;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.date = date;
+        this.tags = tags;
+
+        this.comments = comments;
+        this.answers = answers;
+    }
+
     /***********************************************************************************/
 
     @Override
     public String toString()
     {
-        return String.format("Id: %s - Views: %d - Votes: %d - Title: %s - Content: %s - Author: %s - Date: %s - Tags: %s",
+        return String.format("Id: %s - Views: %s - Votes: %s - Title: %s - Content: %s - Author: %s - Date: %s Tags: %s - Comments: %s - Answers: %s",
 
                 this.id,
                 this.views,
@@ -34,9 +58,10 @@ public class Post
                 this.content,
                 this.author,
                 this.date,
-                this.tags
-
-                );
+                this.tags,
+                this.comments,
+                this.answers
+        );
     }
 
     /***********************************************************************************/
@@ -46,12 +71,12 @@ public class Post
         return id;
     }
 
-    public int getViews()
+    public String getViews()
     {
         return views;
     }
 
-    public int getVotes()
+    public String getVotes()
     {
         return votes;
     }
@@ -83,12 +108,12 @@ public class Post
         this.id = id;
     }
 
-    public void setViews(int views)
+    public void setViews(String views)
     {
         this.views = views;
     }
 
-    public void setVotes(int votes)
+    public void setVotes(String votes)
     {
         this.votes = votes;
     }
@@ -113,4 +138,29 @@ public class Post
         this.date = date;
     }
 
+    /***********************************************************************************/
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(String answers) {
+        this.answers = answers;
+    }
 }

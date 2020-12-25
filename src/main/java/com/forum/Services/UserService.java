@@ -28,11 +28,4 @@ public class UserService
 
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
-
-
-
-
-
-
-
 }

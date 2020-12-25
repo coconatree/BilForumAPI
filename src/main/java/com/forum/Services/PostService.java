@@ -7,10 +7,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.Utilities;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -83,7 +80,7 @@ public class PostService
 
         ArrayList<Forum> forumList = fs.getAllForum();
 
-        ArrayList<Post> allPosts = new ArrayList<Post>();
+        ArrayList<Post> allPosts = new ArrayList<>();
 
         for (Forum forum : forumList)
         {
@@ -99,9 +96,9 @@ public class PostService
 
         Sorting.sortPostListByViews(allPosts);
 
-        ArrayList<Post> ret = new ArrayList<Post>();
+        ArrayList<Post> ret = new ArrayList<>();
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < allPosts.size(); i++)
         {
             ret.add(allPosts.get(i));
         }
@@ -109,6 +106,16 @@ public class PostService
         return ret;
     }
 
+    public String updatePost(Post post) throws ExecutionException, InterruptedException
+    {
+        String forumKey = post.getId().substring(0, 6);
+
+        CollectionReference users = getCollection(String.format("%sPostList", forumKey));
+
+        ApiFuture<WriteResult> collectionsApiFuture = users.document(post.getId()).set(post);
+
+        return collectionsApiFuture.get().getUpdateTime().toString();
+    }
 
     public void deletePost(int id){}
 }

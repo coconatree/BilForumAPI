@@ -3,20 +3,15 @@ package com.forum.Controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forum.PojoClasses.Post;
-import com.forum.Services.PostService;
 
+import com.forum.Services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -104,6 +99,25 @@ public class PostController
         {
             post = mapper.readValue(data, new TypeReference<Post>(){});
             postService.putPostToForum(post, FORUM);
+        }
+        catch (IOException | ExecutionException | InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Post>(post, HttpStatus.OK);
+    }
+
+    @PutMapping("/updatePost")
+    public ResponseEntity<Post> updateUser(@RequestBody String data)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Post post = null;
+
+        try
+        {
+            post = mapper.readValue(data, new TypeReference<Post>(){});
+            postService.updatePost(post);
         }
         catch (IOException | ExecutionException | InterruptedException e)
         {
