@@ -20,9 +20,8 @@ public class PostController
 {
     @Autowired
     PostService postService;
-
+    
     @GetMapping(value = "/getTop10")
-
     public ArrayList<Post> getTopTen()
     {
         try
@@ -36,24 +35,7 @@ public class PostController
         return null;
     }
 
-    @GetMapping(value = "/getAll")
-
-    public ArrayList<Post> getAllPosts()
-    {
-        try
-        {
-            return postService.getAllPosts();
-        }
-        catch (Exception exc)
-        {
-            exc.printStackTrace();
-            System.out.println(exc.getMessage());
-        }
-        return null;
-    }
-
     @GetMapping(value = "/getAll/{FORUM}")
-
     public ArrayList<Post> getAllPosts(@PathVariable(value="FORUM") String FORUM)
     {
         try
@@ -126,9 +108,16 @@ public class PostController
         return new ResponseEntity<Post>(post, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public void deletePost(HttpServletRequest request)
+    @DeleteMapping("/delete/{ID}")
+    public void deletePost(@PathVariable(value = "ID") String ID)
     {
-
+        try
+        {
+            postService.deletePost(ID);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -15,14 +15,30 @@ import java.util.ArrayList;
 @RequestMapping("/search")
 public class SearchController
 {
+    @Autowired
+    PostService ps;
+
     @GetMapping(
             value = "/allForums/{QUERY}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-
     public void getSearchQuery(@PathVariable(value = "QUERY") String QUERY)
     {
         System.out.println(QUERY);
+    }
+
+    @GetMapping(value = "/{QUERY}")
+    public ArrayList<Post> search(@PathVariable(value = "QUERY") String QUERY)
+    {
+        try
+        {
+            return ps.search(QUERY);
+        }
+        catch(Exception e)
+        {
+            e.getStackTrace();
+        }
+        return null;
     }
 }
